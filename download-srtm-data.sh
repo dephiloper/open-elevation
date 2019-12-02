@@ -2,9 +2,15 @@
 
 set -eu
 
-wget http://gisweb.ciat.cgiar.org/TRMM/SRTM_Resampled_250m/SRTM_NE_250m_TIF.rar && \
-wget http://gisweb.ciat.cgiar.org/TRMM/SRTM_Resampled_250m/SRTM_SE_250m_TIF.rar && \
-wget http://gisweb.ciat.cgiar.org/TRMM/SRTM_Resampled_250m/SRTM_W_250m_TIF.rar && \
-unar -f SRTM_NE_250m_TIF.rar && \
-unar -f SRTM_SE_250m_TIF.rar && \
-unar -f SRTM_W_250m_TIF.rar
+for i in {37..40} 
+do
+  for j in {1..4}
+  do
+    wget http://srtm.csi.cgiar.org/wp-content/uploads/files/srtm_5x5/TIFF/srtm_${i}_0${j}.zip -q --show-progress
+    unzip -q -o srtm_${i}_0${j}.zip -d data/
+    rm srtm_${i}_0${j}.zip
+    echo "srtm_${i}_0${j}.tif" >> ./loaded-files.txt
+  done
+done
+
+rm data/*.tfw data/*.hdr data/*.txt
